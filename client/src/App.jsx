@@ -114,11 +114,8 @@ const Badge = ({ type }) => {
 // --- Aplicação Principal (Dashboard + Lógica) ---
 
 export default function App() {
-  // ESTADO DE USUÁRIO (O Porteiro)
-  // Se null = Mostra Login. Se tiver dados = Mostra App.
   const [user, setUser] = useState(null);
 
-  // Estados do App
   const [projects, setProjects] = useState([
     { id: 'trabalho', name: 'Trabalho', type: 'fixed' },
     { id: 'pessoal', name: 'Pessoal', type: 'fixed' }
@@ -132,12 +129,10 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTaskText, setNewTaskText] = useState("");
 
-  // --- Renderização Condicional (A Mágica acontece aqui) ---
   if (!user) {
     return <LoginScreen onLogin={(userData) => setUser(userData)} />;
   }
 
-  // ... (Funções do App) ...
   const getProjectIcon = (id) => {
     if (id === 'trabalho') return <Briefcase size={20} />;
     if (id === 'pessoal') return <Home size={20} />;
@@ -181,7 +176,7 @@ export default function App() {
 
   const handleLogout = () => {
     if(confirm("Deseja sair do sistema?")) {
-      setUser(null); // Volta para a tela de login
+      setUser(null);
     }
   };
 
