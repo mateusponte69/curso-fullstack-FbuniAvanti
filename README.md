@@ -303,7 +303,7 @@ npx prisma generate
      ```bash
      npm install && npx prisma migrate deploy && npx prisma generate && npm run build
      ```
-     *Ordem importante: migrations → gerar client → build frontend*
+     *Ordem importante: install deps → migrations → gerar client → build frontend*
    - **Start Command:**
      ```bash
      npm start

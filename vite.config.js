@@ -5,6 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/', // Essencial para SPA no Render
+  root: 'client', // Define a raiz como client/ onde está o index.html
+  build: {
+    outDir: 'dist', // Output relativo ao root (client/dist)
+    emptyOutDir: true,
+  },
   server: {
     proxy: {
       '/api': {

@@ -72,8 +72,14 @@ if (isProduction) {
   app.use(express.static(staticPath));
   
   // Fallback para SPA - todas as rotas não-API vão pro index.html
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(staticPath, 'index.html'));
+  // Express 5.x: usar regex ou middleware ao invés de '*'
+  app.use((req, res, next) => {
+    // Se não for uma rota de API, serve o index.html
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(staticPath, 'index.html'));
+    } else {
+      next();
+    }
   });
 } else {
   console.log('⚠️  Modo desenvolvimento: frontend não está sendo servido pelo Express');
