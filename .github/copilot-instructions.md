@@ -133,7 +133,7 @@ Isso torna enxuto: Features são auto-contidas, como módulos Angular, facilitan
 - Dev: "jest": "^29.7.0", "eslint": "^8.55.0", "prisma": "^6.0.0".
 **Setup Instruções:**
 1. npm install
-2. Crie .env: PORT=3000, API_BASE_URL=http://localhost:3000, DATABASE_URL="file:./dev.db" (para SQLite de teste).
+2. Crie .env: PORT=3000, VITE_BASE_URL=http://localhost:3000, DATABASE_URL="file:./dev.db" (para SQLite de teste).
 3. Rode npx prisma init --datasource-provider sqlite (configura schema.prisma).
 4. Defina modelos no schema.prisma (ex: model Task { id Int @id @default(autoincrement()) ... }).
 5. Rode npx prisma generate (gera Prisma Client).
@@ -175,7 +175,46 @@ Isso torna enxuto: Features são auto-contidas, como módulos Angular, facilitan
 
 ## 9. Documentação e Contribuição
 **Documentação:** README.md com setup, run commands, arquitetura e exemplos de API (ex: GET /api/tasks), JSDoc em funções.
+
+Ao gerar documentação, siga rigorosamente a distinção entre Escopo Macro (README) e Escopo Micro (JSDoc) para evitar redundância.
+
+### A. JSDoc (Foco: Desenvolvedor & IDE)
+Use JSDoc para explicar a implementação interna, contratos e nuances para quem está lendo o código ou usando IntelliSense.
+- **Não explique o óbvio:** Evite `/** Adiciona a e b */ function add(a, b)`.
+- **Foque no "Porquê" e "E se":** Explique regras de negócio complexas, *edge cases* e exceções.
+- **Tags Obrigatórias em funções complexas:**
+  - `@param`: Explique restrições (ex: "ID deve ser positivo", "String não pode ser vazia").
+  - `@returns`: Explique o significado do retorno (
+    ex: "Retorna `null` se não encontrado").
+  - `@throws`: Liste os erros que a função pode disparar explicitamente.
+- **Exemplo:**
+  ```javascript
+  /**
+   * Sanitiza o payload de atualização.
+   * Remove chaves `undefined` para evitar sobrescrever dados no banco com valores nulos incorretos.
+   * @param {Object} rawData - O body bruto da requisição.
+   * @returns {Object} Objeto limpo apenas com campos válidos para patch.
+   */
+
+### B. README.md (Foco: Usuário & Produto)
+
+Use o README para explicar o contexto, instalação e uso prático. É a "vitrine" do projeto.
+
+- **Elevator Pitch:** Comece com uma frase simples sobre o que o projeto resolve.
+- **Setup Rápido:** Comandos essenciais (npm install, variáveis de .env).
+- **Happy Path:** Forneça exemplos de uso do cenário mais comum (JSON de request/response), não a implementação interna.
+- **Arquitetura:** Mencione brevemente a stack e decisões técnicas de alto nível (ex: "Dockerizado com Node.js e Postgres").
+- **NÃO coloque:** Implementação detalhada de funções ou listas exaustivas de todos os métodos (use links para a doc técnica se necessário).
+
+### C. Regra de Complementaridade
+- O README diz O QUE o software faz e COMO começar.
+
+- O JSDoc diz COMO o software funciona internamente e QUAIS são os contratos de dados.
+
+- Nunca duplique código fonte no README.
+
 - Changelog: Mantenha em CHANGELOG.md.
+
 **Contribuição:**
 - Branches: feature/nome (ex: feature/login).
 - PRs: Descreva mudanças, adicione tests.

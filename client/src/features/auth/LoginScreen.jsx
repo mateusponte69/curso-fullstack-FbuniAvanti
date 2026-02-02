@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
+import * as api from '../../shared/services/api';
 
 /**
- * Componente de tela de login com validação básica
+ * Componente de tela de login com validação JWT
  * @param {Object} props
  * @param {Function} props.onLogin - Callback executado após login bem-sucedido
  */
@@ -12,22 +13,21 @@ export default function LoginScreen({ onLogin }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // SIMULAÇÃO DE BACKEND (Delay de 1.5s)
-    setTimeout(() => {
-      // Regra simples: aceita qualquer email, mas senha tem que ter 3+ digitos
-      if (password.length < 3) {
-        setError('A senha deve ter no mínimo 3 caracteres.');
-        setIsLoading(false);
-      } else {
-        // Sucesso!
-        onLogin({ name: 'Mateus', email: email });
-      }
-    }, 1500);
+    try {
+      const { token, user } = await api.login(email, password);
+      
+      // Salva token junto com dados do usuário
+      onLogin({ ...user, token });
+    } catch (err) {
+      setError(err.message || 'Erro ao realizar login');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,7 +48,7 @@ export default function LoginScreen({ onLogin }) {
               type="email"
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-              placeholder="seu@email.com"
+              placeholder="teste@taskflow.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -88,7 +88,7 @@ export default function LoginScreen({ onLogin }) {
         </form>
 
         <p className="text-center text-sm text-gray-400 mt-6">
-          Dica: Use qualquer senha com mais de 3 dígitos.
+          Credenciais de teste: teste@taskflow.com / 123456
         </p>
       </div>
     </div>
