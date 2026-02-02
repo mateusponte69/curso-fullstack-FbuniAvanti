@@ -55,6 +55,9 @@ Vá em **Environment** e adicione:
 # Database (copiar do PostgreSQL criado)
 DATABASE_URL=postgresql://user:pass@host:5432/db?sslmode=require
 
+# CRÍTICO: sem isso o frontend não será servido!
+NODE_ENV=production
+
 # JWT (gerar novo)
 JWT_SECRET=<rode: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))">
 
@@ -62,7 +65,6 @@ JWT_SECRET=<rode: node -e "console.log(require('crypto').randomBytes(64).toStrin
 FRONTEND_URL=https://taskflow-app.onrender.com
 
 # Node
-NODE_ENV=production
 PORT=10000
 ```
 
@@ -149,7 +151,13 @@ npx prisma migrate deploy
 ### Frontend 404 (rotas React)
 1. Confirme que `express.static` aponta para `client/dist` (Vite usa `dist`, não `build`)
 2. Verifique fallback `app.get('*', ...)` no `server.js`
-3. `NODE_ENV=production` deve estar setado
+3. **CRÍTICO:** `NODE_ENV=production` deve estar setado nas env vars do Render
+4. Verifique se o build rodou com sucesso nos logs
+
+### Vejo JSON {"httpStatus": ...} em vez do frontend
+- **Causa:** `NODE_ENV` não está setado como `production`
+- **Solução:** Adicione `NODE_ENV=production` nas Environment Variables do Render
+- **Verificar:** Nos logs, deve aparecer "📦 Servindo frontend de: ..." quando o servidor inicia
 
 ### JWT inválido
 - Faça logout/login novamente
