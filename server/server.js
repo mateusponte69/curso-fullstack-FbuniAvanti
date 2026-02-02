@@ -63,22 +63,30 @@ app.use('/api', projectRoutes);
 // ==================== SERVIR FRONTEND EM PRODUÇÃO ====================
 
 // Serve arquivos estáticos do build do React (apenas em produção)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction) {
+  const staticPath = path.join(__dirname, '../client/dist');
+  console.log(`📦 Servindo frontend de: ${staticPath}`);
+  
+  app.use(express.static(staticPath));
   
   // Fallback para SPA - todas as rotas não-API vão pro index.html
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    res.sendFile(path.join(staticPath, 'index.html'));
   });
 } else {
+  console.log('⚠️  Modo desenvolvimento: frontend não está sendo servido pelo Express');
+  console.log('   Use npm run dev para o frontend ou adicione NODE_ENV=production');
+  
   // Em dev, retorna 404 para rotas não encontradas
   app.use((req, res) => {
-  res.status(404).json({
-    httpStatus: "https://http.dog/404.json",
-    success: false,
-    data: null,
-    message: `Rota ${req.method} ${req.path} não encontrada`
-  });
+    res.status(404).json({
+      httpStatus: "https://http.dog/404.json",
+      success: false,
+      data: null,
+      message: `Rota ${req.method} ${req.path} não encontrada`
+    });
   });
 }
 
