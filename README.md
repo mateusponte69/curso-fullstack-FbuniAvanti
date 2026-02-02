@@ -5,6 +5,12 @@ Aplicação moderna de gerenciamento de tarefas (To-Do List) com arquitetura ful
 > **Projeto Final Avanti - FBuni 2026**  
 > Sistema completo de tarefas com autenticação JWT, projetos customizados e sincronização em tempo real.
 
+🌐 **[Acesse o App em Produção](https://projeto-final-fbuni-avanti.onrender.com)**
+
+**Credenciais de Teste:**
+- Email: `teste@taskflow.com`
+- Senha: `123456`
+
 ---
 
 ## 🚀 Início Rápido
