@@ -5,12 +5,29 @@
   "type": "module",
   "scripts": {
     "dev": "cd client && vite",
-    "build": "cd client && vite build",
+    "dev:server": "node server/server.js",
+    "dev:all": "concurrently \"npm run dev:server\" \"npm run dev\"",
+    "build": "cd client && npm install && npm run build",
+    "start": "NODE_ENV=production node server/server.js",
+    "deploy": "npx prisma migrate deploy && npx prisma generate",
+    "test:db": "node test-db-connection.js",
     "lint": "eslint .",
-    "preview": "cd client && vite preview"
+    "preview": "cd client && vite preview",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "node prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.562.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
@@ -21,6 +38,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.17",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
