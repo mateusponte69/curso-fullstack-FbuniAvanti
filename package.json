@@ -7,7 +7,7 @@
     "dev": "cd client && vite",
     "dev:server": "node server/server.js",
     "dev:all": "concurrently \"npm run dev:server\" \"npm run dev\"",
-    "build": "vite build",
+    "build": "npx vite build",
     "start": "node server/server.js",
     "start:prod": "cross-env NODE_ENV=production node server/server.js",
     "deploy": "npx prisma migrate deploy && npx prisma generate",
